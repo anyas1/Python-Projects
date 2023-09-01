@@ -13,9 +13,7 @@ while True:
     guess = input('Select a number 1-20 ')
     if guess.isdigit():
         guess = int(guess)
-        if guess < min_value:
-            print('Number out of range. Select a number 1-20')
-        elif guess > max_value:
+        if guess < min_value or guess > max_value:
             print('Number out of range. Select a number 1-20')
         elif guess > random_number:
             guess = int(guess)
