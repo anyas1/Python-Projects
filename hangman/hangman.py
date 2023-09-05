@@ -22,7 +22,7 @@ def hangman():
             word_letters.remove(user_letter)
 
     elif user_letter in used_letters:
-        print('You have already guessed that letter. Please try again.')
+        print('You have guessed that letter already. Please try again.')
 
     else:
         print('Invalid character. Try again.')
