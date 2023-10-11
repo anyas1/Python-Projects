@@ -3,7 +3,7 @@ from words import words
 import string
 
 def get_valid_word(words):
-    word = random.choice(words)
+    word = random.choice(words) #randomly chooses something from the list
     while '-' in word or ' ' in word:
         word = random.choice(words)
     
@@ -17,12 +17,13 @@ def hangman():
 
     lives = 8
 
+    #getting user input
     while len(word_letters) > 0 and lives > 0:
-        print('You have', lives, 'lives left and you have used these letters: ', ' '.join(used_letters))
+        print('\nYou have', lives, 'lives left and you have used these letters: ', ' '.join(used_letters))
 
         #what current word is
         word_list = [letter if letter in used_letters else '-' for letter in word]
-        print('Current word: ', ' '.join(word_list))
+        print('\nCurrent word: ', ' '.join(word_list))
         user_letter = input('Guess a letter: ').upper()
         if user_letter in alphabet - used_letters:
             used_letters.add(user_letter)
@@ -31,13 +32,13 @@ def hangman():
 
             else:
                 lives = lives - 1
-                print('Letter is not in word.')
+                print('\nLetter is not in word.')
 
         elif user_letter in used_letters:
-            print('You have guessed that letter already. Please try again.')
+            print('\nYou have guessed that letter already. Please try again.')
 
         else:
-            print('Invalid character. Try again.')
+            print('\nInvalid character. Try again.')
 
     # gets here when len(word_letters) == 0 OR wen lives == 0
     if lives == 0:
