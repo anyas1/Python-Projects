@@ -11,9 +11,9 @@ def select_valid_word(words):
 
 def hangman():
     word = select_valid_word(words)
-    word_letters = set(word)
+    word_letters = set(word) #letters in the word
     alphabet = set(string.ascii_uppercase)
-    used_letters = set()
+    used_letters = set() #what the user has quessed
 
     user_letter = input('Guess a letter: ').upper()
     if user_letter in alphabet - used_letters:
