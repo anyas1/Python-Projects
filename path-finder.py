@@ -1,6 +1,7 @@
 import curses
 from curses import wrapper
 import queue
+import time
 
 maze = [
     ["#", "O", "#", "#", "#", "#", "#", "#", "#"],
@@ -9,8 +10,8 @@ maze = [
     ["#", " ", "#", " ", " ", " ", "#", " ", "#"],
     ["#", " ", "#", " ", "#", " ", "#", " ", "#"],
     ["#", " ", "#", " ", "#", " ", "#", " ", "#"],
-    ["#", " ", "#", " ", "#", " ", "#", "#", "#"],
-    ["#", " ", " ", " ", " ", " ", " ", " ", "#"],
+    ["#", " ", "#", " ", "#", "#", "#", "#", "#"],
+    ["#", " ", "#", " ", " ", " ", " ", " ", "#"],
     ["#", "#", "#", "#", "#", "#", "#", "X", "#"]
 ]
 
@@ -20,7 +21,10 @@ def print_maze(maze, stdscr, path=[]):
 
     for i, row in enumerate(maze):
         for j, value in enumerate(row):
-            stdscr.addstr(i, j*2, value, WHITE)
+            if (i,j) in path:
+                stdscr.addstr(i, j*2, 'X', RED)
+            else:
+                stdscr.addstr(i, j*2, value, WHITE)
 
 def find_start(maze, start):
     for i, row in enumerate(maze):
@@ -44,9 +48,27 @@ def find_path(maze, stdscr):
         current_pos, path = q.get()
         row, col = current_pos
 
+        stdscr.clear()
+        print_maze(maze,stdscr, path)
+        time.sleep(0.2)
+        stdscr.refresh()
+
         if maze[row][col] == end:
             return path
         
+        neighbors = find_neighbors(maze, row, col)
+        for neighbor in neighbors:
+            if neighbor in visited:
+                continue
+
+            r, c = neighbor
+            if maze[r][c] == '#':
+                continue
+            
+            new_path = path + [neighbor]
+            q.put((neighbor, new_path))
+            visited.add(neighbor)
+            
 def find_neighbors(maze, row, col):
     neighbors = []
 
@@ -65,9 +87,7 @@ def main(stdscr):
     curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLACK)
     curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
 
-    stdscr.clear()
-    print_maze(maze,stdscr)
-    stdscr.refresh()
+    find_path(maze, stdscr)
     stdscr.getch()
 
 wrapper(main)
